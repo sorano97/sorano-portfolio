@@ -8,6 +8,7 @@ import { ConversationWindow } from "@/components/ConversationWindow";
 import { Navigation } from "@/components/Navigation";
 import { OpeningSequence } from "@/components/OpeningSequence";
 import { SoundToggle } from "@/components/SoundToggle";
+import { TransitionLink } from "@/components/TransitionLink";
 import { assetPath } from "@/lib/assetPath";
 import {
   characterQuestions,
@@ -81,7 +82,6 @@ export default function Home() {
   const [isAboutConversationActive, setIsAboutConversationActive] = useState(false);
   const [lastMessageId, setLastMessageId] = useState<string | undefined>();
   const [lastQuestionId, setLastQuestionId] = useState<string | undefined>();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [characterTalk, setCharacterTalk] = useState<CharacterTalkState>({
     mode: "idle",
     currentText: "",
@@ -91,9 +91,9 @@ export default function Home() {
   const audioRefs = useRef<Partial<Record<"start" | "type" | "select", HTMLAudioElement>>>({});
 
   useEffect(() => {
-    document.body.classList.toggle("opening-locked", openingStage !== "done" || isProfileOpen);
+    document.body.classList.toggle("opening-locked", openingStage !== "done");
     return () => document.body.classList.remove("opening-locked");
-  }, [isProfileOpen, openingStage]);
+  }, [openingStage]);
 
   useEffect(() => {
     setHasSeenAbout(readLocalStorage("hasSeenAbout") === "true");
@@ -209,8 +209,8 @@ export default function Home() {
     <main className="relative min-h-screen min-w-[1280px] overflow-x-hidden font-best text-ink max-md:min-w-0">
       <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled((value) => !value)} />
       <CharacterDisplay
-        canAnimate={showSite && !isProfileOpen}
-        canTalk={canStartCharacterTalk && !isProfileOpen}
+        canAnimate={showSite}
+        canTalk={canStartCharacterTalk}
         onTalk={startCharacterTalk}
       />
       {characterTalk.mode !== "idle" ? (
@@ -234,7 +234,6 @@ export default function Home() {
             writeLocalStorage("hasSeenAbout", "true");
           }}
           onConversationActiveChange={setIsAboutConversationActive}
-          onOpenProfile={() => setIsProfileOpen(true)}
           playSound={playSound}
         />
         <NewsSection />
@@ -267,9 +266,6 @@ export default function Home() {
             </div>
           </motion.div>
         ) : null}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isProfileOpen ? <ProfileModal onClose={() => setIsProfileOpen(false)} /> : null}
       </AnimatePresence>
     </main>
   );
@@ -488,13 +484,11 @@ function AboutSection({
   hasSeenAbout,
   onAboutComplete,
   onConversationActiveChange,
-  onOpenProfile,
   playSound
 }: {
   hasSeenAbout: boolean;
   onAboutComplete: () => void;
   onConversationActiveChange: (active: boolean) => void;
-  onOpenProfile: () => void;
   playSound: (name: "start" | "type" | "select") => void;
 }) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -543,13 +537,13 @@ function AboutSection({
           )}
         </div>
         <div aria-hidden />
-        <ProfileCard onOpenProfile={onOpenProfile} />
+        <ProfileCard />
       </div>
     </section>
   );
 }
 
-function ProfileCard({ onOpenProfile }: { onOpenProfile: () => void }) {
+function ProfileCard() {
   return (
     <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
       <CardDecoration
@@ -570,9 +564,9 @@ function ProfileCard({ onOpenProfile }: { onOpenProfile: () => void }) {
         </div>
       </div>
       <InfoRow label="Dream" value={profile.dream} />
-      <button className="pixel-button mt-2 w-full px-6 py-4 text-center text-xl max-md:text-base" onClick={onOpenProfile} type="button">
+      <TransitionLink className="pixel-button mt-2 block w-full px-6 py-4 text-center text-xl max-md:text-base" href="/about">
         MORE...
-      </button>
+      </TransitionLink>
     </div>
   );
 }
@@ -805,6 +799,9 @@ function NewsSection() {
           />
           <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">NEWS</p>
           <p className="text-xl leading-loose max-md:text-base">Updates are listed from newest to oldest.</p>
+          <TransitionLink className="pixel-button mt-6 block px-6 py-4 text-center text-xl max-md:text-base" href="/news">
+            VIEW ALL
+          </TransitionLink>
         </div>
       </div>
     </section>
@@ -829,6 +826,11 @@ function WorksSection() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 max-md:static max-md:mt-4 max-md:translate-x-0 max-md:text-center">
+        <TransitionLink className="pixel-button inline-block px-8 py-4 text-xl max-md:text-base" href="/works">
+          VIEW ALL
+        </TransitionLink>
       </div>
     </section>
   );
@@ -901,6 +903,9 @@ function ContactSection() {
           />
           <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">CONTACT</p>
           <p className="text-xl leading-loose max-md:text-base">Please use the available links below.</p>
+          <TransitionLink className="pixel-button mt-6 block px-6 py-4 text-center text-xl max-md:text-base" href="/contact">
+            MORE...
+          </TransitionLink>
         </div>
         <div aria-hidden />
         <div className="grid gap-5 max-md:gap-3">

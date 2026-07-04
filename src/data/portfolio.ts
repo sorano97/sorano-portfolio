@@ -19,7 +19,7 @@ export interface NewsItem {
 }
 
 export interface ContactLink {
-  label: "Instagram" | "GitHub" | "Mail";
+  label: "Instagram" | "GitHub" | "Mail" | "Facebook";
   href: string;
   enabled: boolean;
 }
@@ -164,8 +164,33 @@ export const contacts: ContactLink[] = [
     label: "Mail",
     href: "tsorano.0528@gmail.com",
     enabled: true
+  },
+  {
+    label: "Facebook",
+    href: "",
+    enabled: false
   }
 ];
+
+export const profileDetail = {
+  about: "I'm a student creator who enjoys making software, hardware and cute designs.",
+  currentQuest: "Making people smile through creation.",
+  favorites: ["Oranges", "Games", "Tea", "Cats"],
+  tools: ["VS Code", "Figma", "Fusion360", "Illustrator", "Photoshop"],
+  timeline: [
+    {
+      year: "2025",
+      text: "Opened sorano portfolio."
+    }
+  ]
+};
+
+export const pageMessages = {
+  about: "Welcome to my profile!",
+  news: "Here's what's new!",
+  works: "These are my favorite creations.",
+  contact: "Let's stay in touch!"
+};
 
 export const randomMessages: RandomMessage[] = [
   {

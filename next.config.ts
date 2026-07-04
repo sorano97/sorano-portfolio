@@ -6,6 +6,7 @@ const basePath = isGitHubPages ? "/sorano-portfolio" : "";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "export",
+  trailingSlash: true,
   basePath,
   assetPrefix: basePath,
   images: {
