@@ -74,7 +74,7 @@ export function ConversationWindow({
 
   return (
     <button
-      className={`pixel-panel block min-h-[190px] w-full px-8 py-7 text-left text-2xl leading-[1.7] ${className ?? ""}`}
+      className={`pixel-panel block min-h-[190px] w-full px-8 py-7 text-left text-2xl leading-[1.7] max-md:min-h-[148px] max-md:px-5 max-md:py-5 max-md:text-lg ${className ?? ""}`}
       onClick={advance}
       type="button"
     >

@@ -172,7 +172,7 @@ export function CharacterDisplay({ canAnimate, canTalk = false, onTalk }: Charac
   return (
     <button
       aria-label="Talk to sorano"
-      className={`fixed left-1/2 top-[75vh] z-20 h-[470px] w-[420px] -translate-x-1/2 -translate-y-full border-0 bg-transparent p-0 ${
+      className={`fixed left-1/2 top-[75vh] z-20 h-[470px] w-[420px] -translate-x-1/2 -translate-y-full border-0 bg-transparent p-0 max-md:top-[82svh] max-md:h-[260px] max-md:w-[232px] ${
         canTalk ? "cursor-pointer" : "pointer-events-none"
       }`}
       disabled={!canTalk}

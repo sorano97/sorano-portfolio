@@ -32,15 +32,15 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
     <AnimatePresence>
       <motion.div
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-soft font-best text-ink"
+        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-soft px-5 font-best text-ink max-md:min-w-0"
         exit={{ opacity: 0 }}
         initial={{ opacity: 1 }}
       >
         {step === "start" ? (
           <div className="text-center">
-            <h1 className="mb-14 text-6xl">sorano portfolio</h1>
+            <h1 className="mb-14 text-6xl max-md:mb-10 max-md:text-4xl">sorano portfolio</h1>
             <button
-              className="pixel-button px-14 py-5 text-3xl"
+              className="pixel-button px-14 py-5 text-3xl max-md:px-10 max-md:py-4 max-md:text-2xl"
               onClick={() => {
                 playSound("start");
                 setStep("welcome");
@@ -53,7 +53,7 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
         ) : null}
 
         {step === "welcome" ? (
-          <p className="text-4xl">
+          <p className="text-4xl max-md:text-2xl">
             <Typewriter
               active
               onDone={() => window.setTimeout(() => setStep("loading"), 650)}
@@ -64,8 +64,8 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
         ) : null}
 
         {step === "loading" ? (
-          <div className="w-[520px] text-center">
-            <p className="mb-8 text-4xl">Loading...</p>
+          <div className="w-[520px] text-center max-md:w-full">
+            <p className="mb-8 text-4xl max-md:text-2xl">Loading...</p>
             <div className="h-8 border-[3px] border-line bg-white p-1">
               <motion.div
                 animate={{ width: "100%" }}
@@ -77,10 +77,10 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
           </div>
         ) : null}
 
-        {step === "wait" ? <p className="animate-pulse text-4xl">Please wait...</p> : null}
+        {step === "wait" ? <p className="animate-pulse text-4xl max-md:text-2xl">Please wait...</p> : null}
 
         {step === "name" ? (
-          <p className="text-4xl">
+          <p className="text-4xl max-md:text-2xl">
             <Typewriter
               active
               onDone={() => window.setTimeout(onComplete, 650)}
