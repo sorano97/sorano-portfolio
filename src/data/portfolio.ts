@@ -28,7 +28,14 @@ export interface Profile {
   name: string;
   role: string;
   focus: string[];
+  about: string;
   dream: string;
+  favorites: string[];
+  skills: Array<{
+    name: string;
+    level: number;
+  }>;
+  tools: string[];
 }
 
 export interface RandomMessage {
@@ -51,8 +58,29 @@ export interface CharacterQuestion {
 export const profile: Profile = {
   name: "sorano",
   role: "Student Creator",
+  about: "I'm a student creator who enjoys making software, hardware and cute designs.",
   focus: ["Software", "Hardware", "Design", "Pixel Art"],
-  dream: 'Spread "cute" to the world.'
+  dream: 'Spread "cute" to the world.',
+  favorites: ["🍊 Oranges", "🎮 Games", "☕ Tea", "🐈 Cats"],
+  skills: [
+    {
+      name: "Software",
+      level: 4
+    },
+    {
+      name: "Hardware",
+      level: 3
+    },
+    {
+      name: "Design",
+      level: 5
+    },
+    {
+      name: "Pixel Art",
+      level: 4
+    }
+  ],
+  tools: ["VS Code", "Figma", "Fusion360", "Illustrator", "Photoshop", "Blender"]
 };
 
 export const news: NewsItem[] = [

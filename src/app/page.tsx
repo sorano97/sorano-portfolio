@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CharacterDisplay } from "@/components/CharacterDisplay";
 import { ConversationWindow } from "@/components/ConversationWindow";
@@ -80,6 +81,7 @@ export default function Home() {
   const [isAboutConversationActive, setIsAboutConversationActive] = useState(false);
   const [lastMessageId, setLastMessageId] = useState<string | undefined>();
   const [lastQuestionId, setLastQuestionId] = useState<string | undefined>();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [characterTalk, setCharacterTalk] = useState<CharacterTalkState>({
     mode: "idle",
     currentText: "",
@@ -89,9 +91,9 @@ export default function Home() {
   const audioRefs = useRef<Partial<Record<"start" | "type" | "select", HTMLAudioElement>>>({});
 
   useEffect(() => {
-    document.body.classList.toggle("opening-locked", openingStage !== "done");
+    document.body.classList.toggle("opening-locked", openingStage !== "done" || isProfileOpen);
     return () => document.body.classList.remove("opening-locked");
-  }, [openingStage]);
+  }, [isProfileOpen, openingStage]);
 
   useEffect(() => {
     setHasSeenAbout(readLocalStorage("hasSeenAbout") === "true");
@@ -206,7 +208,11 @@ export default function Home() {
   return (
     <main className="relative min-h-screen min-w-[1280px] overflow-x-hidden font-best text-ink max-md:min-w-0">
       <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled((value) => !value)} />
-      <CharacterDisplay canAnimate={showSite} canTalk={canStartCharacterTalk} onTalk={startCharacterTalk} />
+      <CharacterDisplay
+        canAnimate={showSite && !isProfileOpen}
+        canTalk={canStartCharacterTalk && !isProfileOpen}
+        onTalk={startCharacterTalk}
+      />
       {characterTalk.mode !== "idle" ? (
         <CharacterTalkWindow
           onClose={closeCharacterTalk}
@@ -228,6 +234,7 @@ export default function Home() {
             writeLocalStorage("hasSeenAbout", "true");
           }}
           onConversationActiveChange={setIsAboutConversationActive}
+          onOpenProfile={() => setIsProfileOpen(true)}
           playSound={playSound}
         />
         <NewsSection />
@@ -260,6 +267,9 @@ export default function Home() {
             </div>
           </motion.div>
         ) : null}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isProfileOpen ? <ProfileModal onClose={() => setIsProfileOpen(false)} /> : null}
       </AnimatePresence>
     </main>
   );
@@ -478,11 +488,13 @@ function AboutSection({
   hasSeenAbout,
   onAboutComplete,
   onConversationActiveChange,
+  onOpenProfile,
   playSound
 }: {
   hasSeenAbout: boolean;
   onAboutComplete: () => void;
   onConversationActiveChange: (active: boolean) => void;
+  onOpenProfile: () => void;
   playSound: (name: "start" | "type" | "select") => void;
 }) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -531,13 +543,13 @@ function AboutSection({
           )}
         </div>
         <div aria-hidden />
-        <ProfileCard />
+        <ProfileCard onOpenProfile={onOpenProfile} />
       </div>
     </section>
   );
 }
 
-function ProfileCard() {
+function ProfileCard({ onOpenProfile }: { onOpenProfile: () => void }) {
   return (
     <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
       <CardDecoration
@@ -558,6 +570,9 @@ function ProfileCard() {
         </div>
       </div>
       <InfoRow label="Dream" value={profile.dream} />
+      <button className="pixel-button mt-2 w-full px-6 py-4 text-center text-xl max-md:text-base" onClick={onOpenProfile} type="button">
+        MORE...
+      </button>
     </div>
   );
 }
@@ -568,6 +583,177 @@ function InfoRow({ label, value }: { label: string; value: string }) {
       <p className="mb-2 text-sm uppercase tracking-[0.18em] text-rose">{label}</p>
       <p className="text-xl max-md:text-base">{value}</p>
     </div>
+  );
+}
+
+function ProfileModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-white/90 px-8 py-8 font-best text-ink max-md:px-4 max-md:py-4"
+      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
+    >
+      <motion.div
+        animate={{ opacity: 1, scale: 1 }}
+        className="pixel-panel relative flex max-h-[calc(100svh-64px)] w-[760px] max-w-full flex-col overflow-hidden bg-white"
+        exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.15 } }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <div className="border-b-[3px] border-line px-8 py-6 text-center max-md:px-5 max-md:py-5">
+          <p className="text-3xl max-md:text-xl">CHARACTER PROFILE</p>
+        </div>
+
+        <div className="overflow-y-auto px-8 py-7 max-md:px-5 max-md:py-5">
+          <ProfileDivider />
+          <div className="grid place-items-center py-5">
+            <p className="mb-4 text-xl text-rose max-md:text-base">Character</p>
+            <ProfileBlinkCharacter />
+          </div>
+
+          <ProfileField label="Name">{profile.name}</ProfileField>
+          <ProfileField label="Role">{profile.role}</ProfileField>
+          <ProfileField label="About Me">{profile.about}</ProfileField>
+          <ProfileField label="Dream">{profile.dream.replace(" to ", "\nto ")}</ProfileField>
+
+          <ProfileDivider />
+          <ProfileBlockTitle>Skills</ProfileBlockTitle>
+          <div className="grid gap-4 py-4">
+            {profile.skills.map((skill) => (
+              <div className="grid grid-cols-[150px_1fr] items-center gap-4 max-md:grid-cols-1 max-md:gap-2" key={skill.name}>
+                <p>{skill.name}</p>
+                <p className="text-rose">
+                  {"■".repeat(skill.level)}
+                  <span className="text-ink">{"□".repeat(Math.max(0, 5 - skill.level))}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <ProfileDivider />
+          <ProfileBlockTitle>Favorite</ProfileBlockTitle>
+          <div className="grid grid-cols-2 gap-3 py-4 max-md:grid-cols-1">
+            {profile.favorites.map((favorite) => (
+              <p key={favorite}>{favorite}</p>
+            ))}
+          </div>
+
+          <ProfileDivider />
+          <ProfileBlockTitle>Tools</ProfileBlockTitle>
+          <div className="flex flex-wrap gap-3 py-4">
+            {profile.tools.map((tool) => (
+              <span className="border-2 border-line bg-soft px-3 py-2 text-sm" key={tool}>
+                {tool}
+              </span>
+            ))}
+          </div>
+
+          <ProfileDivider />
+          <button className="pixel-button mt-5 w-full px-8 py-4 text-xl max-md:text-base" onClick={onClose} type="button">
+            Close
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ProfileBlinkCharacter() {
+  const frames = useMemo(
+    () => [assetPath("/character/1.png"), assetPath("/character/half.png"), assetPath("/character/closed.png")],
+    []
+  );
+  const [src, setSrc] = useState(frames[0]);
+
+  useEffect(() => {
+    frames.forEach((frame) => {
+      const image = new window.Image();
+      image.src = frame;
+    });
+  }, [frames]);
+
+  useEffect(() => {
+    let blinkTimer: number | null = null;
+    let frameTimer: number | null = null;
+    let cancelled = false;
+    const sequence = [frames[1], frames[2], frames[1], frames[0]];
+
+    const schedule = () => {
+      blinkTimer = window.setTimeout(
+        () => {
+          let index = 0;
+          const next = () => {
+            if (cancelled) return;
+            setSrc(sequence[index]);
+            index += 1;
+            if (index < sequence.length) {
+              frameTimer = window.setTimeout(next, 90);
+            } else {
+              schedule();
+            }
+          };
+          next();
+        },
+        3500 + Math.random() * 3500
+      );
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      if (blinkTimer) window.clearTimeout(blinkTimer);
+      if (frameTimer) window.clearTimeout(frameTimer);
+    };
+  }, [frames]);
+
+  return (
+    <div className="relative h-[220px] w-[220px] max-md:h-[168px] max-md:w-[168px]">
+      {frames.map((frame) => (
+        <img
+          alt={frame === src ? "sorano pixel character" : ""}
+          aria-hidden={frame === src ? undefined : true}
+          className={`absolute inset-0 h-full w-full object-contain [image-rendering:pixelated] ${
+            frame === src ? "block" : "hidden"
+          }`}
+          key={frame}
+          src={frame}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ProfileDivider() {
+  return <div className="my-4 border-t-[3px] border-line" />;
+}
+
+function ProfileBlockTitle({ children }: { children: ReactNode }) {
+  return <p className="pt-2 text-xl text-rose max-md:text-base">{children}</p>;
+}
+
+function ProfileField({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <>
+      <ProfileDivider />
+      <div className="py-3">
+        <p className="mb-3 text-sm uppercase tracking-[0.18em] text-rose">{label}</p>
+        <p className="whitespace-pre-line text-xl leading-relaxed max-md:text-base">{children}</p>
+      </div>
+    </>
   );
 }
 
