@@ -5,15 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#171215",
-        soft: "#fff7fb",
-        blush: "#ffd9e9",
-        rose: "#ff8fba",
-        line: "#2a2025"
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        soft: "rgb(var(--color-soft) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        blush: "rgb(var(--color-blush) / <alpha-value>)",
+        rose: "rgb(var(--color-rose) / <alpha-value>)",
+        line: "rgb(var(--color-line) / <alpha-value>)"
       },
       boxShadow: {
-        pixel: "6px 6px 0 #ffd9e9",
-        lift: "8px 8px 0 #ffd0e5"
+        pixel: "var(--shadow-pixel)",
+        lift: "var(--shadow-lift)"
       },
       fontFamily: {
         best: ["var(--font-best)", "monospace"]

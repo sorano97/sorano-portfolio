@@ -14,7 +14,7 @@ export function Navigation() {
   return (
     <motion.nav
       animate={{ y: 0, opacity: 1 }}
-      className="fixed left-0 top-0 z-30 flex w-full min-w-[1280px] justify-center border-b-[3px] border-line bg-white/90 px-10 py-5 font-best backdrop-blur max-md:min-w-0 max-md:overflow-x-auto max-md:px-4 max-md:py-3"
+      className="fixed left-0 top-0 z-30 flex w-full min-w-[1280px] justify-center border-b-[3px] border-line bg-surface/90 px-10 py-5 font-best backdrop-blur max-md:min-w-0 max-md:overflow-x-auto max-md:px-4 max-md:py-3"
       initial={{ y: -90, opacity: 0 }}
       transition={{ duration: 0.42, ease: "easeOut" }}
     >

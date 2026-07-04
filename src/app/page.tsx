@@ -8,6 +8,7 @@ import { ConversationWindow } from "@/components/ConversationWindow";
 import { Navigation } from "@/components/Navigation";
 import { OpeningSequence } from "@/components/OpeningSequence";
 import { SoundToggle } from "@/components/SoundToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { TransitionLink } from "@/components/TransitionLink";
 import { assetPath } from "@/lib/assetPath";
 import {
@@ -94,6 +95,31 @@ function shouldSkipTopOpening() {
   }
 }
 
+function getStoredTheme() {
+  if (typeof window === "undefined") return "light";
+
+  try {
+    const storedTheme = window.localStorage.getItem("theme");
+    if (storedTheme === "dark" || storedTheme === "light") {
+      return storedTheme;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  } catch {
+    return "light";
+  }
+}
+
+function applyTheme(theme: "light" | "dark") {
+  try {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem("theme", theme);
+  } catch {
+    return;
+  }
+}
+
 function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string) {
   const candidates = items.length > 1 ? items.filter((item) => item.id !== lastId) : items;
   return candidates[Math.floor(Math.random() * candidates.length)];
@@ -101,6 +127,7 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 
 export default function Home() {
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
     shouldSkipTopOpening() || consumeSkipTopOpening() ? "done" : "sequence"
   );
@@ -135,6 +162,12 @@ export default function Home() {
     setHasSeenAbout(readLocalStorage("hasSeenAbout") === "true");
   }, []);
 
+  useEffect(() => {
+    const theme = getStoredTheme();
+    setDarkMode(theme === "dark");
+    applyTheme(theme);
+  }, []);
+
   const playSound = useCallback(
     (name: "start" | "type" | "select") => {
       if (!soundEnabled) return;
@@ -153,6 +186,14 @@ export default function Home() {
 
   const showSite = openingStage === "done";
   const canStartCharacterTalk = showSite && !isAboutConversationActive && characterTalk.mode === "idle";
+
+  const toggleTheme = useCallback(() => {
+    setDarkMode((current) => {
+      const next = !current;
+      applyTheme(next ? "dark" : "light");
+      return next;
+    });
+  }, []);
 
   const closeCharacterTalk = useCallback(() => {
     if (characterTalk.mode === "idle") return;
@@ -243,7 +284,10 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen min-w-[1280px] overflow-x-hidden font-best text-ink max-md:min-w-0">
-      <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled((value) => !value)} />
+      <div className="fixed right-8 top-8 z-50 flex gap-2 max-md:right-3 max-md:top-3">
+        <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled((value) => !value)} />
+        <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
+      </div>
       <CharacterDisplay
         canAnimate={showSite}
         canTalk={canStartCharacterTalk}
@@ -285,7 +329,7 @@ export default function Home() {
         {openingStage === "conversation" ? (
           <motion.div
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-40 flex min-w-[1280px] items-end justify-center bg-white/80 px-20 pb-20 font-best max-md:min-w-0 max-md:px-5 max-md:pb-6"
+            className="fixed inset-0 z-40 flex min-w-[1280px] items-end justify-center bg-surface/80 px-20 pb-20 font-best max-md:min-w-0 max-md:px-5 max-md:pb-6"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
           >
@@ -632,14 +676,14 @@ function ProfileModal({ onClose }: { onClose: () => void }) {
   return (
     <motion.div
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-white/90 px-8 py-8 font-best text-ink max-md:px-4 max-md:py-4"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-surface/90 px-8 py-8 font-best text-ink max-md:px-4 max-md:py-4"
       exit={{ opacity: 0 }}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
     >
       <motion.div
         animate={{ opacity: 1, scale: 1 }}
-        className="pixel-panel relative flex max-h-[calc(100svh-64px)] w-[760px] max-w-full flex-col overflow-hidden bg-white"
+        className="pixel-panel relative flex max-h-[calc(100svh-64px)] w-[760px] max-w-full flex-col overflow-hidden bg-surface"
         exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.15 } }}
         initial={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
@@ -906,7 +950,7 @@ function WorkCard({ work }: { work: (typeof works)[number] }) {
           <p className="mb-3 text-sm leading-relaxed max-md:text-xs">{work.description}</p>
           <div className="flex flex-wrap gap-2">
             {work.tags.map((tag) => (
-              <span className="border-2 border-blush bg-white px-2 py-1 text-xs max-md:px-1.5 max-md:text-[10px]" key={tag}>
+              <span className="border-2 border-blush bg-surface px-2 py-1 text-xs max-md:px-1.5 max-md:text-[10px]" key={tag}>
                 {tag}
               </span>
             ))}

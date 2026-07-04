@@ -3,8 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --background: #fffafd;
-  --foreground: #171215;
+  --color-ink: 23 18 21;
+  --color-soft: 255 247 251;
+  --color-surface: 255 255 255;
+  --color-blush: 255 217 233;
+  --color-rose: 255 143 186;
+  --color-line: 42 32 37;
+  --body-bg-top: 255 250 253;
+  --body-bg-bottom: 255 243 248;
+  --grid-dot: 255 143 186;
+  --shadow-pixel: 6px 6px 0 rgb(var(--color-blush));
+  --shadow-lift: 8px 8px 0 rgb(var(--color-rose) / 0.34);
+}
+
+html[data-theme="dark"] {
+  --color-ink: 245 236 241;
+  --color-soft: 32 26 35;
+  --color-surface: 38 31 42;
+  --color-blush: 88 63 79;
+  --color-rose: 255 158 198;
+  --color-line: 230 216 225;
+  --body-bg-top: 17 13 19;
+  --body-bg-bottom: 28 21 32;
+  --grid-dot: 99 73 87;
+  --shadow-pixel: 6px 6px 0 rgb(var(--color-blush));
+  --shadow-lift: 8px 8px 0 rgb(var(--color-rose) / 0.24);
 }
 
 * {
@@ -20,9 +43,9 @@ body {
   min-width: 1280px;
   margin: 0;
   background:
-    radial-gradient(circle, rgba(255, 143, 186, 0.22) 1px, transparent 1px) 0 0 / 18px 18px,
-    linear-gradient(180deg, #fffafd 0%, #fff3f8 100%);
-  color: var(--foreground);
+    radial-gradient(circle, rgb(var(--grid-dot) / 0.22) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, rgb(var(--body-bg-top)) 0%, rgb(var(--body-bg-bottom)) 100%);
+  color: rgb(var(--color-ink));
   font-family: var(--font-best), monospace;
 }
 
@@ -36,25 +59,25 @@ a {
 }
 
 ::selection {
-  background: #ffd9e9;
+  background: rgb(var(--color-blush));
 }
 
 .pixel-panel {
-  border: 3px solid #2a2025;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 6px 6px 0 #ffd9e9;
+  border: 3px solid rgb(var(--color-line));
+  background: rgb(var(--color-surface) / 0.88);
+  box-shadow: var(--shadow-pixel);
 }
 
 .pixel-button {
-  border: 3px solid #2a2025;
-  background: #ffffff;
-  color: #171215;
+  border: 3px solid rgb(var(--color-line));
+  background: rgb(var(--color-surface));
+  color: rgb(var(--color-ink));
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-width 160ms ease;
 }
 
 .pixel-button:hover:not(:disabled) {
-  background: #ffd9e9;
-  box-shadow: 5px 5px 0 #ffbfd8;
+  background: rgb(var(--color-blush));
+  box-shadow: var(--shadow-lift);
   transform: translateY(-3px);
 }
 

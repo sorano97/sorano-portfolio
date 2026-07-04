@@ -47,7 +47,7 @@ export default function AboutPage() {
           <DetailRow label="Tools">
             <div className="flex flex-wrap gap-3">
               {profileDetail.tools.map((tool) => (
-                <span className="border-2 border-blush bg-white px-3 py-2 text-base" key={tool}>
+                <span className="border-2 border-blush bg-surface px-3 py-2 text-base" key={tool}>
                   {tool}
                 </span>
               ))}

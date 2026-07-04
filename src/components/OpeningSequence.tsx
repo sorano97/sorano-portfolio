@@ -25,7 +25,7 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
     <AnimatePresence>
       <motion.div
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-white px-5 font-best text-ink max-md:min-w-0"
+        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-surface px-5 font-best text-ink max-md:min-w-0"
         exit={{ opacity: 0 }}
         initial={{ opacity: 1 }}
       >

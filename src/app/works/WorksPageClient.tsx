@@ -49,7 +49,7 @@ export function WorksPageClient() {
                       <p className="mb-4 text-sm leading-relaxed">{work.description}</p>
                       <div className="flex flex-wrap gap-2">
                         {work.tags.map((tag) => (
-                          <span className="border-2 border-blush bg-white px-2 py-1 text-xs" key={tag}>
+                          <span className="border-2 border-blush bg-surface px-2 py-1 text-xs" key={tag}>
                             {tag}
                           </span>
                         ))}

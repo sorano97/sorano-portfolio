@@ -58,7 +58,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
               {loading ? (
                 <motion.div
                   animate={{ opacity: 1 }}
-                  className="fixed inset-0 z-[90] flex items-center justify-center bg-white font-best text-ink"
+                  className="fixed inset-0 z-[90] flex items-center justify-center bg-surface font-best text-ink"
                   exit={{ opacity: 0 }}
                   initial={{ opacity: 0 }}
                   transition={{ duration: 0.15 }}
@@ -68,7 +68,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
                     <div className="grid grid-cols-8 gap-1">
                       {Array.from({ length: 8 }).map((_, index) => (
                         <span
-                          className={`h-5 w-5 border-2 border-line ${index < filledBlocks ? "bg-blush" : "bg-white"}`}
+                          className={`h-5 w-5 border-2 border-line ${index < filledBlocks ? "bg-blush" : "bg-surface"}`}
                           key={index}
                         />
                       ))}
