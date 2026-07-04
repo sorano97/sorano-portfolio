@@ -34,7 +34,7 @@ export default function RootLayout({
                 try {
                   const storedTheme = localStorage.getItem("theme");
                   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                  const theme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : prefersDark ? "dark" : "light";
+                  const theme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : "light";
                   document.documentElement.dataset.theme = theme;
                   document.documentElement.style.colorScheme = theme;
                 } catch {
