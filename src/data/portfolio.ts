@@ -19,7 +19,7 @@ export interface NewsItem {
 }
 
 export interface ContactLink {
-  label: "Instagram" | "GitHub" | "Mail" | "Facebook";
+  label: "Instagram" | "GitHub" | "Mail";
   href: string;
   enabled: boolean;
 }
@@ -129,18 +129,13 @@ export const contacts: ContactLink[] = [
   },
   {
     label: "GitHub",
-    href: "",
-    enabled: false
+    href: "https://github.com/sorano97",
+    enabled: true
   },
   {
     label: "Mail",
-    href: "",
-    enabled: false
-  },
-  {
-    label: "Facebook",
-    href: "",
-    enabled: false
+    href: "tsorano.0528@gmail.com",
+    enabled: true
   }
 ];
 
