@@ -13,6 +13,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [filledBlocks, setFilledBlocks] = useState(0);
+  const targetHref = href === "/" ? "/?skipOpening=1" : href;
 
   useEffect(() => {
     if (!loading) return;
@@ -30,7 +31,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
   return (
     <>
       <a
-        href={href}
+        href={targetHref}
         onClick={(event) => {
           onClick?.(event);
           if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -44,7 +45,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
             }
           }
           setLoading(true);
-          window.setTimeout(() => router.push(href), 800);
+          window.setTimeout(() => router.push(targetHref), 800);
         }}
         {...props}
       >

@@ -84,6 +84,16 @@ function consumeSkipTopOpening() {
   }
 }
 
+function shouldSkipTopOpening() {
+  if (typeof window === "undefined") return false;
+
+  try {
+    return new URLSearchParams(window.location.search).get("skipOpening") === "1";
+  } catch {
+    return false;
+  }
+}
+
 function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string) {
   const candidates = items.length > 1 ? items.filter((item) => item.id !== lastId) : items;
   return candidates[Math.floor(Math.random() * candidates.length)];
@@ -92,7 +102,7 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 export default function Home() {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
-    consumeSkipTopOpening() ? "done" : "sequence"
+    shouldSkipTopOpening() || consumeSkipTopOpening() ? "done" : "sequence"
   );
   const [hasSeenAbout, setHasSeenAbout] = useState(true);
   const [isAboutConversationActive, setIsAboutConversationActive] = useState(false);
@@ -109,6 +119,16 @@ export default function Home() {
   useEffect(() => {
     document.body.classList.toggle("opening-locked", openingStage !== "done");
     return () => document.body.classList.remove("opening-locked");
+  }, [openingStage]);
+
+  useEffect(() => {
+    if (openingStage === "sequence") return;
+
+    try {
+      window.history.replaceState(null, "", window.location.pathname);
+    } catch {
+      return;
+    }
   }, [openingStage]);
 
   useEffect(() => {
