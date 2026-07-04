@@ -9,7 +9,7 @@ interface OpeningSequenceProps {
   playSound: (name: "start" | "type" | "select") => void;
 }
 
-type OpeningStep = "start" | "welcome" | "loading" | "wait" | "name";
+type OpeningStep = "start" | "welcome" | "loading" | "name";
 
 export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps) {
   const [step, setStep] = useState<OpeningStep>("start");
@@ -17,14 +17,7 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
   useEffect(() => {
     if (step !== "loading") return;
 
-    const timer = window.setTimeout(() => setStep("wait"), 2000);
-    return () => window.clearTimeout(timer);
-  }, [step]);
-
-  useEffect(() => {
-    if (step !== "wait") return;
-
-    const timer = window.setTimeout(() => setStep("name"), 1300);
+    const timer = window.setTimeout(() => setStep("name"), 2000);
     return () => window.clearTimeout(timer);
   }, [step]);
 
@@ -32,7 +25,7 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
     <AnimatePresence>
       <motion.div
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-soft px-5 font-best text-ink max-md:min-w-0"
+        className="fixed inset-0 z-40 flex min-w-[1280px] items-center justify-center bg-white px-5 font-best text-ink max-md:min-w-0"
         exit={{ opacity: 0 }}
         initial={{ opacity: 1 }}
       >
@@ -64,20 +57,8 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
         ) : null}
 
         {step === "loading" ? (
-          <div className="w-[520px] text-center max-md:w-full">
-            <p className="mb-8 text-4xl max-md:text-2xl">Loading...</p>
-            <div className="h-8 border-[3px] border-line bg-white p-1">
-              <motion.div
-                animate={{ width: "100%" }}
-                className="h-full bg-blush"
-                initial={{ width: "0%" }}
-                transition={{ duration: 2, ease: "linear" }}
-              />
-            </div>
-          </div>
+          <p className="text-4xl max-md:text-2xl">Open...</p>
         ) : null}
-
-        {step === "wait" ? <p className="animate-pulse text-4xl max-md:text-2xl">Please wait...</p> : null}
 
         {step === "name" ? (
           <p className="text-4xl max-md:text-2xl">
