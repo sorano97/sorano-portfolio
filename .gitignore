@@ -1,0 +1,14 @@
+.DS_Store
+.next/
+node_modules/
+*.log
+
+# Source assets copied into public/ are kept out of the app repository.
+Best10-FONT*/
+キャラクター/
+黒猫.png
+/ribbon_pink_01.png
+/ribbon_pink_02.png
+/mark_heart_pink_02.png
+/mark_heart_pink_03.png
+/fukidashi_heart_pink_white.png

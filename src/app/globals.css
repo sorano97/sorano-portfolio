@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "BestTen";
+  src: url("/fonts/BestTen-DOT.otf") format("opentype");
+  font-display: swap;
+}
+
+:root {
+  --font-best: "BestTen";
+  --background: #fffafd;
+  --foreground: #171215;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  min-width: 1280px;
+  margin: 0;
+  background:
+    radial-gradient(circle, rgba(255, 143, 186, 0.22) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, #fffafd 0%, #fff3f8 100%);
+  color: var(--foreground);
+  font-family: var(--font-best), monospace;
+}
+
+body.opening-locked {
+  overflow: hidden;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+::selection {
+  background: #ffd9e9;
+}
+
+.pixel-panel {
+  border: 3px solid #2a2025;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 6px 6px 0 #ffd9e9;
+}
+
+.pixel-button {
+  border: 3px solid #2a2025;
+  background: #ffffff;
+  color: #171215;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-width 160ms ease;
+}
+
+.pixel-button:hover:not(:disabled) {
+  background: #ffd9e9;
+  box-shadow: 5px 5px 0 #ffbfd8;
+  transform: translateY(-3px);
+}
+
+.pixel-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.section-shell {
+  position: relative;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  padding: 140px 88px 72px;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) 420px minmax(320px, 1fr);
+  gap: 58px;
+  align-items: center;
+  min-height: calc(100vh - 220px);
+}
+
+.blink-caret::after {
+  content: "▼";
+  display: inline-block;
+  margin-left: 12px;
+  animation: blink 900ms steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
