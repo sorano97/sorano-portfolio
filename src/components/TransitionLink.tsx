@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import { useEffect, useState, type AnchorHTMLAttributes, type ReactNode } from "react";
 
 interface TransitionLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
@@ -51,26 +52,34 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
       >
         {children}
       </a>
-      <AnimatePresence>
-        {loading ? (
-          <motion.div
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-white font-best text-ink"
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <div className="text-center">
-              <p className="mb-5 text-3xl max-md:text-2xl">Open...</p>
-              <div className="grid grid-cols-8 gap-1">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <span className={`h-5 w-5 border-2 border-line ${index < filledBlocks ? "bg-blush" : "bg-white"}`} key={index} />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      {typeof document !== "undefined"
+        ? createPortal(
+            <AnimatePresence>
+              {loading ? (
+                <motion.div
+                  animate={{ opacity: 1 }}
+                  className="fixed inset-0 z-[90] flex items-center justify-center bg-white font-best text-ink"
+                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <div className="text-center">
+                    <p className="mb-5 text-3xl max-md:text-2xl">Open...</p>
+                    <div className="grid grid-cols-8 gap-1">
+                      {Array.from({ length: 8 }).map((_, index) => (
+                        <span
+                          className={`h-5 w-5 border-2 border-line ${index < filledBlocks ? "bg-blush" : "bg-white"}`}
+                          key={index}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>,
+            document.body
+          )
+        : null}
     </>
   );
 }
