@@ -7,6 +7,7 @@ import { ConversationWindow } from "@/components/ConversationWindow";
 import { Navigation } from "@/components/Navigation";
 import { OpeningSequence } from "@/components/OpeningSequence";
 import { SoundToggle } from "@/components/SoundToggle";
+import { assetPath } from "@/lib/assetPath";
 import {
   characterQuestions,
   contacts,
@@ -101,7 +102,7 @@ export default function Home() {
       if (!soundEnabled) return;
 
       try {
-        const audio = audioRefs.current[name] ?? new Audio(`/sounds/${name}.mp3`);
+        const audio = audioRefs.current[name] ?? new Audio(assetPath(`/sounds/${name}.mp3`));
         audioRefs.current[name] = audio;
         audio.currentTime = 0;
         void audio.play().catch(() => undefined);
@@ -268,7 +269,11 @@ function CardDecoration({
   src,
   className
 }: {
-  src: "/decorations/ribbon_pink_01.png" | "/decorations/ribbon_pink_02.png" | "/decorations/mark_heart_pink_02.png" | "/decorations/mark_heart_pink_03.png";
+  src:
+    | "/decorations/ribbon_pink_01.png"
+    | "/decorations/ribbon_pink_02.png"
+    | "/decorations/mark_heart_pink_02.png"
+    | "/decorations/mark_heart_pink_03.png";
   className: string;
 }) {
   return (
@@ -276,7 +281,7 @@ function CardDecoration({
       alt=""
       aria-hidden
       className={`pointer-events-none absolute select-none [image-rendering:pixelated] ${className}`}
-      src={src}
+      src={assetPath(src)}
     />
   );
 }
@@ -321,7 +326,7 @@ function CharacterHeartBubble() {
           className="pointer-events-none fixed left-[calc(50%-215px)] top-[calc(75vh-430px)] z-30 w-[96px] [image-rendering:pixelated]"
           exit={{ opacity: 0 }}
           initial={{ opacity: 0, y: 0, scale: 0.92 }}
-          src="/decorations/fukidashi_heart_pink_white.png"
+          src={assetPath("/decorations/fukidashi_heart_pink_white.png")}
           transition={{ duration: 4.2, ease: "easeOut", times: [0, 0.16, 0.82, 1] }}
         />
       ) : null}

@@ -1,19 +1,25 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { assetPath } from "@/lib/assetPath";
 
 const rotationFrames = [
-  "/character/1.png",
-  "/character/2.png",
-  "/character/3.png",
-  "/character/4.png",
-  "/character/5.png",
-  "/character/6.png",
-  "/character/7.png",
-  "/character/8.png"
+  assetPath("/character/1.png"),
+  assetPath("/character/2.png"),
+  assetPath("/character/3.png"),
+  assetPath("/character/4.png"),
+  assetPath("/character/5.png"),
+  assetPath("/character/6.png"),
+  assetPath("/character/7.png"),
+  assetPath("/character/8.png")
 ];
 
-const blinkFrames = ["/character/half.png", "/character/closed.png", "/character/half.png", "/character/1.png"];
+const blinkFrames = [
+  assetPath("/character/half.png"),
+  assetPath("/character/closed.png"),
+  assetPath("/character/half.png"),
+  assetPath("/character/1.png")
+];
 
 interface CharacterDisplayProps {
   canAnimate: boolean;
@@ -32,7 +38,10 @@ export function CharacterDisplay({ canAnimate, canTalk = false, onTalk }: Charac
   const isScrollingRef = useRef(false);
   const lastDirection = useRef<1 | -1>(1);
 
-  const preloadImages = useMemo(() => [...rotationFrames, "/character/half.png", "/character/closed.png"], []);
+  const preloadImages = useMemo(
+    () => [...rotationFrames, assetPath("/character/half.png"), assetPath("/character/closed.png")],
+    []
+  );
 
   useEffect(() => {
     preloadImages.forEach((imageSrc) => {
