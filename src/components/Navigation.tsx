@@ -1,8 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { TransitionLink } from "./TransitionLink";
 
-const items = ["ABOUT", "NEWS", "WORKS", "CONTACT"];
+const items = [
+  { href: "/about", label: "ABOUT" },
+  { href: "/news", label: "NEWS" },
+  { href: "/works", label: "WORKS" },
+  { href: "/contact", label: "CONTACT" }
+];
 
 export function Navigation() {
   return (
@@ -14,9 +20,9 @@ export function Navigation() {
     >
       <div className="flex gap-9 text-xl max-md:gap-5 max-md:text-sm">
         {items.map((item) => (
-          <a className="transition hover:text-rose" href={`#${item.toLowerCase()}`} key={item}>
-            {item}
-          </a>
+          <TransitionLink className="transition hover:text-rose" href={item.href} key={item.href}>
+            {item.label}
+          </TransitionLink>
         ))}
       </div>
     </motion.nav>
