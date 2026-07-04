@@ -70,6 +70,20 @@ function writeLocalStorage(key: string, value: string) {
   }
 }
 
+function consumeSkipTopOpening() {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const shouldSkip = window.sessionStorage.getItem("skipTopOpening") === "true";
+    if (shouldSkip) {
+      window.sessionStorage.removeItem("skipTopOpening");
+    }
+    return shouldSkip;
+  } catch {
+    return false;
+  }
+}
+
 function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string) {
   const candidates = items.length > 1 ? items.filter((item) => item.id !== lastId) : items;
   return candidates[Math.floor(Math.random() * candidates.length)];
@@ -77,7 +91,9 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 
 export default function Home() {
   const [soundEnabled, setSoundEnabled] = useState(false);
-  const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">("sequence");
+  const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
+    consumeSkipTopOpening() ? "done" : "sequence"
+  );
   const [hasSeenAbout, setHasSeenAbout] = useState(true);
   const [isAboutConversationActive, setIsAboutConversationActive] = useState(false);
   const [lastMessageId, setLastMessageId] = useState<string | undefined>();
