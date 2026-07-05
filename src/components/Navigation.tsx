@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLocale } from "./LocaleProvider";
 import { TransitionLink } from "./TransitionLink";
 
 const items = [
@@ -11,6 +12,12 @@ const items = [
 ];
 
 export function Navigation() {
+  const { locale } = useLocale();
+  const labels =
+    locale === "ja"
+      ? { about: "紹介", news: "ニュース", works: "作品", contact: "連絡先" }
+      : { about: "ABOUT", news: "NEWS", works: "WORKS", contact: "CONTACT" };
+
   return (
     <motion.nav
       animate={{ y: 0, opacity: 1 }}
@@ -21,7 +28,13 @@ export function Navigation() {
       <div className="flex gap-9 text-xl max-md:gap-5 max-md:text-sm">
         {items.map((item) => (
           <TransitionLink className="transition hover:text-rose" href={item.href} key={item.href}>
-            {item.label}
+            {item.href === "/about"
+              ? labels.about
+              : item.href === "/news"
+                ? labels.news
+                : item.href === "/works"
+                  ? labels.works
+                  : labels.contact}
           </TransitionLink>
         ))}
       </div>

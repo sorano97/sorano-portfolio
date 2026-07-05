@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { assetPath } from "@/lib/assetPath";
+import { LocaleProvider } from "@/components/LocaleProvider";
 
 const bestTen = localFont({
   src: "../../public/fonts/BestTen-DOT.otf",
@@ -33,7 +34,6 @@ export default function RootLayout({
               (() => {
                 try {
                   const storedTheme = localStorage.getItem("theme");
-                  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
                   const theme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : "light";
                   document.documentElement.dataset.theme = theme;
                   document.documentElement.style.colorScheme = theme;
@@ -46,7 +46,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={bestTen.variable}>{children}</body>
+      <body className={bestTen.variable}>
+        <LocaleProvider>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }

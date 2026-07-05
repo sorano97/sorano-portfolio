@@ -1,11 +1,37 @@
+"use client";
+
 import { DetailPageShell } from "@/components/DetailPageShell";
+import { useLocale } from "@/components/LocaleProvider";
 import { news, pageMessages } from "@/data/portfolio";
+import { assetPath } from "@/lib/assetPath";
 
 export default function NewsPage() {
+  const { locale } = useLocale();
+  const isJa = locale === "ja";
   const sortedNews = [...news].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <DetailPageShell message={pageMessages.news} title="NEWS LOG">
+    <DetailPageShell
+      isJa={isJa}
+      decoration={
+        <>
+          <img
+            alt=""
+            aria-hidden
+            className="theme-light-decoration h-[58px] w-[58px] [image-rendering:pixelated]"
+            src={assetPath("/decorations/kirakira_01_brown.png")}
+          />
+          <img
+            alt=""
+            aria-hidden
+            className="theme-dark-decoration h-[58px] w-[58px] [image-rendering:pixelated]"
+            src={assetPath("/decorations/mark_heart_pink_03.png")}
+          />
+        </>
+      }
+      message={isJa ? "新着情報はこちら。" : pageMessages.news}
+      title={isJa ? "ニュース一覧" : "NEWS LOG"}
+    >
       <div className="grid gap-5">
         {sortedNews.map((item) => {
           const content = (

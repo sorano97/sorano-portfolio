@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LanguageToggle } from "./LanguageToggle";
+import { useLocale } from "./LocaleProvider";
 import { SoundToggle } from "./SoundToggle";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -55,6 +57,7 @@ function writeSound(enabled: boolean) {
 export function GlobalControls({ soundEnabled, onSoundToggle, onSoundReady }: GlobalControlsProps) {
   const [darkMode, setDarkMode] = useState(false);
   const [internalSound, setInternalSound] = useState(false);
+  const { locale, setLocale } = useLocale();
   const controlledSound = typeof soundEnabled === "boolean";
   const activeSound = controlledSound ? soundEnabled : internalSound;
 
@@ -103,6 +106,7 @@ export function GlobalControls({ soundEnabled, onSoundToggle, onSoundReady }: Gl
   return (
     <div className="fixed right-8 top-8 z-50 flex gap-2 max-md:right-3 max-md:top-3">
       <SoundToggle enabled={activeSound} onToggle={toggleSound} />
+      <LanguageToggle locale={locale} onToggle={() => setLocale(locale === "ja" ? "en" : "ja")} />
       <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
     </div>
   );

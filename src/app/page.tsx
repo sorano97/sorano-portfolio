@@ -9,6 +9,7 @@ import { GlobalControls } from "@/components/GlobalControls";
 import { Navigation } from "@/components/Navigation";
 import { OpeningSequence } from "@/components/OpeningSequence";
 import { TransitionLink } from "@/components/TransitionLink";
+import { useLocale } from "@/components/LocaleProvider";
 import { assetPath } from "@/lib/assetPath";
 import {
   characterQuestions,
@@ -135,6 +136,8 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 }
 
 export default function Home() {
+  const { locale } = useLocale();
+  const isJa = locale === "ja";
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
     shouldSkipTopOpening() || consumeSkipTopOpening() ? "done" : "sequence"
@@ -302,8 +305,9 @@ export default function Home() {
       {showSite ? <Navigation /> : null}
 
       <div className={showSite ? "snap-y snap-mandatory" : "h-screen overflow-hidden max-md:w-full"}>
-        <TopSection />
+        <TopSection isJa={isJa} />
         <AboutSection
+          isJa={isJa}
           hasSeenAbout={hasSeenAbout}
           onAboutComplete={() => {
             setHasSeenAbout(true);
@@ -313,9 +317,9 @@ export default function Home() {
           onConversationActiveChange={setIsAboutConversationActive}
           playSound={playSound}
         />
-        <NewsSection />
-        <WorksSection />
-        <ContactSection />
+        <NewsSection isJa={isJa} />
+        <WorksSection isJa={isJa} />
+        <ContactSection isJa={isJa} />
       </div>
 
       <AnimatePresence>
@@ -551,7 +555,7 @@ function CharacterTalkWindow({
   );
 }
 
-function TopSection() {
+function TopSection({ isJa }: { isJa: boolean }) {
   return (
     <section className="section-shell" id="top">
       <div className="section-grid">
@@ -562,12 +566,16 @@ function TopSection() {
             src="/decorations/ribbon_pink_01.png"
           />
           <p className="mb-4 text-3xl max-md:text-2xl">sorano portfolio</p>
-          <p className="text-xl leading-loose max-md:text-base">Software, hardware, design and pixel art.</p>
+          <p className="text-xl leading-loose max-md:text-base">
+            {isJa ? "ソフトウェア、ハードウェア、デザイン、ドット絵。" : "Software, hardware, design and pixel art."}
+          </p>
         </div>
         <div aria-hidden />
         <div className="pixel-panel px-9 py-8 max-md:px-5 max-md:py-5">
           <p className="mb-5 text-2xl max-md:mb-3 max-md:text-xl">WELCOME</p>
-          <p className="text-lg leading-loose max-md:text-sm">Scroll to explore works, news and contact links.</p>
+          <p className="text-lg leading-loose max-md:text-sm">
+            {isJa ? "スクロールで作品、ニュース、連絡先を見てください。" : "Scroll to explore works, news and contact links."}
+          </p>
         </div>
       </div>
     </section>
@@ -575,11 +583,13 @@ function TopSection() {
 }
 
 function AboutSection({
+  isJa,
   hasSeenAbout,
   onAboutComplete,
   onConversationActiveChange,
   playSound
 }: {
+  isJa: boolean;
   hasSeenAbout: boolean;
   onAboutComplete: () => void;
   onConversationActiveChange: (active: boolean) => void;
@@ -615,8 +625,12 @@ function AboutSection({
         <div>
           {hasSeenAbout ? (
             <div className="pixel-panel px-8 py-7 text-xl leading-loose max-md:px-5 max-md:py-5 max-md:text-base">
-              <p>ABOUT</p>
-              <p className="mt-5">I make small, cute things across software, hardware and design.</p>
+              <p>{isJa ? "ABOUT" : "ABOUT"}</p>
+              <p className="mt-5">
+                {isJa
+                  ? "ソフトウェア、ハードウェア、デザインで、\nかわいいものを作っています。"
+                  : "I make small, cute things across software, hardware and design."}
+              </p>
             </div>
           ) : (
             <ConversationWindow
@@ -846,7 +860,7 @@ function ProfileField({ label, children }: { label: string; children: ReactNode 
   );
 }
 
-function NewsSection() {
+function NewsSection({ isJa }: { isJa: boolean }) {
   return (
     <section className="section-shell" id="news">
       <div className="section-grid">
@@ -894,10 +908,12 @@ function NewsSection() {
             lightSrc="/decorations/kirakira_02_brown.png"
             src="/decorations/mark_heart_pink_03.png"
           />
-          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">NEWS</p>
-          <p className="text-xl leading-loose max-md:text-base">Updates are listed from newest to oldest.</p>
+          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">{isJa ? "ニュース" : "NEWS"}</p>
+          <p className="text-xl leading-loose max-md:text-base">
+            {isJa ? "最新の更新から順番に並んでいます。" : "Updates are listed from newest to oldest."}
+          </p>
           <TransitionLink className="pixel-button mt-6 block px-6 py-4 text-center text-xl max-md:text-base" href="/news">
-            VIEW ALL
+            {isJa ? "一覧を見る" : "VIEW ALL"}
           </TransitionLink>
         </div>
       </div>
@@ -905,7 +921,7 @@ function NewsSection() {
   );
 }
 
-function WorksSection() {
+function WorksSection({ isJa }: { isJa: boolean }) {
   const categories: WorkCategory[] = useMemo(() => ["Art & Design", "Software & Hardware"], []);
 
   return (
@@ -913,7 +929,9 @@ function WorksSection() {
       <div className="grid min-h-[calc(100vh-220px)] grid-cols-[1fr_420px_1fr] gap-12 max-md:block max-md:min-h-0">
         {categories.map((category, index) => (
           <div className={`${index === 1 ? "col-start-3" : ""} max-md:mb-8`} key={category}>
-            <p className="mb-5 text-2xl max-md:mb-4 max-md:text-xl">{category}</p>
+            <p className="mb-5 text-2xl max-md:mb-4 max-md:text-xl">
+              {isJa && category === "Art & Design" ? "アート・デザイン" : isJa && category === "Software & Hardware" ? "ソフトウェア・ハードウェア" : category}
+            </p>
             <div className="grid gap-5 max-md:gap-4">
               {works
                 .filter((work) => work.category === category)
@@ -926,7 +944,7 @@ function WorksSection() {
       </div>
       <div className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 max-md:static max-md:mt-4 max-md:translate-x-0 max-md:text-center">
         <TransitionLink className="pixel-button inline-block px-8 py-4 text-xl max-md:text-base" href="/works">
-          VIEW ALL
+          {isJa ? "一覧を見る" : "VIEW ALL"}
         </TransitionLink>
       </div>
     </section>
@@ -980,7 +998,7 @@ function WorkCard({ work }: { work: (typeof works)[number] }) {
   );
 
   const className =
-    "pixel-panel relative block px-5 py-5 transition hover:-translate-y-1 hover:border-[4px] hover:shadow-lift max-md:px-4 max-md:py-4";
+    "pixel-panel relative block px-5 py-5 transition duration-150 hover:-translate-y-1 hover:shadow-lift max-md:px-4 max-md:py-4";
 
   return work.url ? (
     <a className={`${className} cursor-pointer`} href={work.url} rel="noopener noreferrer" target="_blank">
@@ -991,7 +1009,7 @@ function WorkCard({ work }: { work: (typeof works)[number] }) {
   );
 }
 
-function ContactSection() {
+function ContactSection({ isJa }: { isJa: boolean }) {
   return (
     <section className="section-shell" id="contact">
       <div className="section-grid">
@@ -1001,10 +1019,12 @@ function ContactSection() {
             lightSrc="/decorations/ribbon_brown_line_02.png"
             src="/decorations/ribbon_pink_02.png"
           />
-          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">CONTACT</p>
-          <p className="text-xl leading-loose max-md:text-base">Please use the available links below.</p>
+          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">{isJa ? "連絡先" : "CONTACT"}</p>
+          <p className="text-xl leading-loose max-md:text-base">
+            {isJa ? "下のリンクから連絡してください。" : "Please use the available links below."}
+          </p>
           <TransitionLink className="pixel-button mt-6 block px-6 py-4 text-center text-xl max-md:text-base" href="/contact">
-            MORE...
+            {isJa ? "もっと見る..." : "MORE..."}
           </TransitionLink>
         </div>
         <div aria-hidden />
