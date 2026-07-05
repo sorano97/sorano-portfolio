@@ -10,7 +10,7 @@ export default function WorksPage() {
   const isJa = locale === "ja";
 
   return (
-    <DetailPageShell isJa={isJa} message={isJa ? "作品を一覧で見られます。" : pageMessages.works} title={isJa ? "作品一覧" : "WORKS"}>
+    <DetailPageShell isJa={isJa} message={isJa ? "作品を一覧でご覧いただけます。" : pageMessages.works} title={isJa ? "作品一覧" : "WORKS"}>
       <WorksPageClient />
     </DetailPageShell>
   );

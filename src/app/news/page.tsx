@@ -29,7 +29,7 @@ export default function NewsPage() {
           />
         </>
       }
-      message={isJa ? "新着情報はこちら。" : pageMessages.news}
+      message={isJa ? "最新のお知らせをまとめています。" : pageMessages.news}
       title={isJa ? "ニュース一覧" : "NEWS LOG"}
     >
       <div className="grid gap-5">

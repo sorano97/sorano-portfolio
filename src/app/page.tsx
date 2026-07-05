@@ -18,7 +18,9 @@ import {
   profile,
   randomMessages,
   works,
+  type CharacterQuestion,
   type CharacterQuestionOption,
+  type RandomMessage,
   type WorkCategory
 } from "@/data/portfolio";
 
@@ -40,7 +42,7 @@ interface CharacterTalkState {
   options: CharacterQuestionOption[];
 }
 
-const openingLines = [
+const openingLinesEn = [
   "Hello!",
   "I'm sorano.",
   "I'm a student creator.",
@@ -49,10 +51,206 @@ const openingLines = [
   "Thanks for stopping by!"
 ];
 
-const aboutLines = [
+const openingLinesJa = [
+  "こんにちは！",
+  "soranoです。",
+  "学生クリエイターです。",
+  "ソフトウェア、\nハードウェア、デザインを作っています。",
+  'わたしの夢は\n"かわいい" を広めることです。',
+  "見に来てくれてありがとうございます。"
+];
+
+const aboutLinesEn = [
   "Welcome to ABOUT.",
   "I like making things that feel simple,\nsoft and a little playful.",
   "Software, hardware and design are\nall tools for sharing cute ideas."
+];
+
+const aboutLinesJa = [
+  "ABOUTへようこそ。",
+  "シンプルで、やわらかくて、少し遊び心のあるものづくりが好きです。",
+  "ソフトウェア、ハードウェア、デザインは、\nかわいいアイデアを届けるための手段です。"
+];
+
+const randomMessagesJa: RandomMessage[] = [
+  {
+    id: "hello",
+    text: "こんにちは！"
+  },
+  {
+    id: "welcome",
+    text: "ようこそ！"
+  },
+  {
+    id: "take-your-time",
+    text: "ゆっくり見ていってください。"
+  },
+  {
+    id: "explore",
+    text: "一緒に見ていきましょう。"
+  },
+  {
+    id: "sorano",
+    text: "soranoです。"
+  },
+  {
+    id: "student",
+    text: "学生クリエイターです。"
+  },
+  {
+    id: "pixel-art",
+    text: "ドット絵が好きです。"
+  },
+  {
+    id: "cute",
+    text: "かわいいは、誰かを笑顔にします。"
+  },
+  {
+    id: "profile",
+    text: "プロフィールも見てください。"
+  },
+  {
+    id: "works",
+    text: "作品も見てください。"
+  },
+  {
+    id: "contact",
+    text: "気軽に連絡してください。"
+  },
+  {
+    id: "thanks",
+    text: "来てくれてありがとうございます。"
+  }
+];
+
+const characterQuestionsJa: CharacterQuestion[] = [
+  {
+    id: "oranges",
+    question: "オレンジは好きですか？",
+    options: [
+      {
+        label: "はい",
+        response: "わたしも好きです。🍊"
+      },
+      {
+        label: "いいえ",
+        response: "そうなんですね。\nいつか好きになってくれるかも。"
+      }
+    ]
+  },
+  {
+    id: "pixel-art",
+    question: "ドット絵は好きですか？",
+    options: [
+      {
+        label: "はい",
+        response: "うれしいです。\n気に入ってもらえてよかったです。"
+      },
+      {
+        label: "いいえ",
+        response: "大丈夫です。\n好みはそれぞれですから。"
+      }
+    ]
+  },
+  {
+    id: "making-things",
+    question: "ものづくりは楽しいですか？",
+    options: [
+      {
+        label: "はい",
+        response: "いいですね。\nこれからも一緒に作っていきましょう。"
+      },
+      {
+        label: "いいえ",
+        response: "きっと、\n夢中になれるものが見つかります。"
+      }
+    ]
+  },
+  {
+    id: "cute-things",
+    question: "かわいいものは好きですか？",
+    options: [
+      {
+        label: "はい",
+        response: "わたしもです。\n\"かわいい\" は人を笑顔にします。"
+      },
+      {
+        label: "いいえ",
+        response: "そうですか。\n意外かもしれませんね。"
+      }
+    ]
+  },
+  {
+    id: "coffee-tea",
+    question: "コーヒーと紅茶、どちらが好きですか？",
+    options: [
+      {
+        label: "コーヒー",
+        response: "いい選択です。"
+      },
+      {
+        label: "紅茶",
+        response: "紅茶は落ち着きますね。"
+      }
+    ]
+  },
+  {
+    id: "cats-dogs",
+    question: "猫と犬、どちらが好きですか？",
+    options: [
+      {
+        label: "猫",
+        response: "猫はかわいいですよね。"
+      },
+      {
+        label: "犬",
+        response: "犬もとても素敵です。"
+      }
+    ]
+  },
+  {
+    id: "having-fun",
+    question: "楽しんでもらえていますか？",
+    options: [
+      {
+        label: "はい",
+        response: "よかったです。"
+      },
+      {
+        label: "いいえ",
+        response: "もっと楽しんでもらえるようにがんばります。"
+      }
+    ]
+  },
+  {
+    id: "come-back",
+    question: "また来てくれますか？",
+    options: [
+      {
+        label: "はい",
+        response: "お待ちしています。"
+      },
+      {
+        label: "いいえ",
+        response: "さみしいですが、また会えたらうれしいです。"
+      }
+    ]
+  },
+  {
+    id: "secret",
+    question: "ひみつ、守れますか？",
+    rare: true,
+    options: [
+      {
+        label: "はい",
+        response: "……ありがとう。"
+      },
+      {
+        label: "いいえ",
+        response: "それなら、\n自分だけで大切にしておきます。"
+      }
+    ]
+  }
 ];
 
 function readLocalStorage(key: string) {
@@ -138,6 +336,10 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 export default function Home() {
   const { locale } = useLocale();
   const isJa = locale === "ja";
+  const openingLines = isJa ? openingLinesJa : openingLinesEn;
+  const aboutLines = isJa ? aboutLinesJa : aboutLinesEn;
+  const talkMessages = isJa ? randomMessagesJa : randomMessages;
+  const talkQuestions = isJa ? characterQuestionsJa : characterQuestions;
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
     shouldSkipTopOpening() || consumeSkipTopOpening() ? "done" : "sequence"
@@ -253,8 +455,8 @@ export default function Home() {
     if (!canStartCharacterTalk) return;
 
     if (Math.random() < TALK_EVENT_RATE.question) {
-      const rareQuestions = characterQuestions.filter((question) => question.rare);
-      const normalQuestions = characterQuestions.filter((question) => !question.rare);
+      const rareQuestions = talkQuestions.filter((question) => question.rare);
+      const normalQuestions = talkQuestions.filter((question) => !question.rare);
       const availableRareQuestions = rareQuestions.filter((question) => question.id !== lastQuestionId);
       const shouldUseRare = availableRareQuestions.length > 0 && Math.random() < RARE_QUESTION_RATE;
       const pool = shouldUseRare ? availableRareQuestions : normalQuestions;
@@ -273,7 +475,7 @@ export default function Home() {
       return;
     }
 
-    const message = pickWithoutRepeat(randomMessages, lastMessageId);
+    const message = pickWithoutRepeat(talkMessages, lastMessageId);
     if (!message) return;
 
     setCharacterTalk({
@@ -283,7 +485,7 @@ export default function Home() {
       selectedOptionIndex: 0,
       options: []
     });
-  }, [canStartCharacterTalk, lastMessageId, lastQuestionId, playSound]);
+  }, [canStartCharacterTalk, lastMessageId, lastQuestionId, playSound, talkMessages, talkQuestions]);
 
   return (
     <main className="relative min-h-screen min-w-[1280px] overflow-x-hidden font-best text-ink max-md:min-w-0">
@@ -307,7 +509,7 @@ export default function Home() {
       <div className={showSite ? "snap-y snap-mandatory" : "h-screen overflow-hidden max-md:w-full"}>
         <TopSection isJa={isJa} />
         <AboutSection
-          isJa={isJa}
+          aboutLines={aboutLines}
           hasSeenAbout={hasSeenAbout}
           onAboutComplete={() => {
             setHasSeenAbout(true);
@@ -567,14 +769,14 @@ function TopSection({ isJa }: { isJa: boolean }) {
           />
           <p className="mb-4 text-3xl max-md:text-2xl">sorano portfolio</p>
           <p className="text-xl leading-loose max-md:text-base">
-            {isJa ? "ソフトウェア、ハードウェア、デザイン、ドット絵。" : "Software, hardware, design and pixel art."}
+            {isJa ? "ソフトウェア、ハードウェア、デザイン、ドット絵を作っています。" : "Software, hardware, design and pixel art."}
           </p>
         </div>
         <div aria-hidden />
         <div className="pixel-panel px-9 py-8 max-md:px-5 max-md:py-5">
           <p className="mb-5 text-2xl max-md:mb-3 max-md:text-xl">WELCOME</p>
           <p className="text-lg leading-loose max-md:text-sm">
-            {isJa ? "スクロールで作品、ニュース、連絡先を見てください。" : "Scroll to explore works, news and contact links."}
+            {isJa ? "下へスクロールすると、作品やニュース、連絡先が見られます。" : "Scroll to explore works, news and contact links."}
           </p>
         </div>
       </div>
@@ -583,13 +785,13 @@ function TopSection({ isJa }: { isJa: boolean }) {
 }
 
 function AboutSection({
-  isJa,
+  aboutLines,
   hasSeenAbout,
   onAboutComplete,
   onConversationActiveChange,
   playSound
 }: {
-  isJa: boolean;
+  aboutLines: string[];
   hasSeenAbout: boolean;
   onAboutComplete: () => void;
   onConversationActiveChange: (active: boolean) => void;
@@ -625,11 +827,9 @@ function AboutSection({
         <div>
           {hasSeenAbout ? (
             <div className="pixel-panel px-8 py-7 text-xl leading-loose max-md:px-5 max-md:py-5 max-md:text-base">
-              <p>{isJa ? "ABOUT" : "ABOUT"}</p>
+              <p>ABOUT</p>
               <p className="mt-5">
-                {isJa
-                  ? "ソフトウェア、ハードウェア、デザインで、\nかわいいものを作っています。"
-                  : "I make small, cute things across software, hardware and design."}
+                I make small, cute things across software, hardware and design.
               </p>
             </div>
           ) : (
@@ -908,12 +1108,12 @@ function NewsSection({ isJa }: { isJa: boolean }) {
             lightSrc="/decorations/kirakira_02_brown.png"
             src="/decorations/mark_heart_pink_03.png"
           />
-          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">{isJa ? "ニュース" : "NEWS"}</p>
+          <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">NEWS</p>
           <p className="text-xl leading-loose max-md:text-base">
-            {isJa ? "最新の更新から順番に並んでいます。" : "Updates are listed from newest to oldest."}
+            Updates are listed from newest to oldest.
           </p>
           <TransitionLink className="pixel-button mt-6 block px-6 py-4 text-center text-xl max-md:text-base" href="/news">
-            {isJa ? "一覧を見る" : "VIEW ALL"}
+            VIEW ALL
           </TransitionLink>
         </div>
       </div>

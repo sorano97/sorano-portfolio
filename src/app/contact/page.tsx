@@ -32,7 +32,7 @@ export default function ContactPage() {
       title={isJa ? "連絡先" : "CONTACT"}
     >
       <div className="mx-auto max-w-xl text-center">
-        <p className="mb-8 text-3xl max-md:text-2xl">{isJa ? "つながりましょう！" : "Let's connect!"}</p>
+        <p className="mb-8 text-3xl max-md:text-2xl">{isJa ? "つながりましょう。" : "Let's connect!"}</p>
         <div className="grid gap-4">
           {contacts.map((contact) => {
             const href = contact.label === "Mail" && contact.href ? `mailto:${contact.href}` : contact.href;
@@ -49,8 +49,8 @@ export default function ContactPage() {
         </div>
         <div className="mt-10 border-t-[3px] border-line pt-8">
           <p className="mb-3 text-sm uppercase tracking-[0.18em] text-rose">{isJa ? "対応状況" : "Availability"}</p>
-          <p className="mb-8 text-xl">{isJa ? "お仕事のご相談を受け付けています。" : "Open for collaboration."}</p>
-          <p className="text-2xl max-md:text-xl">{isJa ? "ご覧いただきありがとうございます。" : "Thank you for visiting!"}</p>
+          <p className="mb-8 text-xl">{isJa ? "お仕事のご相談も受け付けています。" : "Open for collaboration."}</p>
+          <p className="text-2xl max-md:text-xl">{isJa ? "ご覧いただき、ありがとうございます。" : "Thank you for visiting!"}</p>
         </div>
       </div>
     </DetailPageShell>
