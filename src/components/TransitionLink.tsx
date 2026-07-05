@@ -64,7 +64,7 @@ export function TransitionLink({ href, children, onClick, ...props }: Transition
                   transition={{ duration: 0.15 }}
                 >
                   <div className="text-center">
-                    <p className="mb-5 text-3xl max-md:text-2xl">Open...</p>
+                    <p className="mb-5 text-3xl max-md:text-2xl">Open</p>
                     <div className="grid grid-cols-8 gap-1">
                       {Array.from({ length: 8 }).map((_, index) => (
                         <span

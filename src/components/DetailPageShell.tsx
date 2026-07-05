@@ -1,4 +1,5 @@
 import { PageNav } from "./PageNav";
+import { GlobalControls } from "./GlobalControls";
 import { TransitionLink } from "./TransitionLink";
 import { assetPath } from "@/lib/assetPath";
 
@@ -13,6 +14,7 @@ export function DetailPageShell({
 }) {
   return (
     <main className="min-h-screen bg-soft px-12 pb-16 pt-28 font-best text-ink max-md:px-4 max-md:pt-24">
+      <GlobalControls />
       <PageNav />
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 grid grid-cols-[160px_1fr] items-end gap-5 max-md:grid-cols-[86px_1fr]">

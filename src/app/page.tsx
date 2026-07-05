@@ -5,10 +5,9 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CharacterDisplay } from "@/components/CharacterDisplay";
 import { ConversationWindow } from "@/components/ConversationWindow";
+import { GlobalControls } from "@/components/GlobalControls";
 import { Navigation } from "@/components/Navigation";
 import { OpeningSequence } from "@/components/OpeningSequence";
-import { SoundToggle } from "@/components/SoundToggle";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { TransitionLink } from "@/components/TransitionLink";
 import { assetPath } from "@/lib/assetPath";
 import {
@@ -110,6 +109,16 @@ function getStoredTheme() {
   }
 }
 
+function getStoredSound() {
+  if (typeof window === "undefined") return false;
+
+  try {
+    return window.localStorage.getItem("sound") === "on";
+  } catch {
+    return false;
+  }
+}
+
 function applyTheme(theme: "light" | "dark") {
   try {
     document.documentElement.dataset.theme = theme;
@@ -127,7 +136,6 @@ function pickWithoutRepeat<T extends { id: string }>(items: T[], lastId?: string
 
 export default function Home() {
   const [soundEnabled, setSoundEnabled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [openingStage, setOpeningStage] = useState<"sequence" | "conversation" | "done">(() =>
     shouldSkipTopOpening() || consumeSkipTopOpening() ? "done" : "sequence"
   );
@@ -164,8 +172,8 @@ export default function Home() {
 
   useEffect(() => {
     const theme = getStoredTheme();
-    setDarkMode(theme === "dark");
     applyTheme(theme);
+    setSoundEnabled(getStoredSound());
   }, []);
 
   const playSound = useCallback(
@@ -186,14 +194,6 @@ export default function Home() {
 
   const showSite = openingStage === "done";
   const canStartCharacterTalk = showSite && !isAboutConversationActive && characterTalk.mode === "idle";
-
-  const toggleTheme = useCallback(() => {
-    setDarkMode((current) => {
-      const next = !current;
-      applyTheme(next ? "dark" : "light");
-      return next;
-    });
-  }, []);
 
   const closeCharacterTalk = useCallback(() => {
     if (characterTalk.mode === "idle") return;
@@ -284,10 +284,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen min-w-[1280px] overflow-x-hidden font-best text-ink max-md:min-w-0">
-      <div className="fixed right-8 top-8 z-50 flex gap-2 max-md:right-3 max-md:top-3">
-        <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled((value) => !value)} />
-        <ThemeToggle darkMode={darkMode} onToggle={toggleTheme} />
-      </div>
+      <GlobalControls soundEnabled={soundEnabled} onSoundReady={setSoundEnabled} onSoundToggle={() => setSoundEnabled((value) => !value)} />
       <CharacterDisplay
         canAnimate={showSite}
         canTalk={canStartCharacterTalk}
