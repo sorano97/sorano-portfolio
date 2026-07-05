@@ -14,7 +14,7 @@ export function ThemeToggle({ darkMode, onToggle, className = "" }: ThemeToggleP
       onClick={onToggle}
       type="button"
     >
-      THEME {darkMode ? "ON" : "OFF"}
+      {darkMode ? "DARK MODE" : "LIGHT MODE"}
     </button>
   );
 }

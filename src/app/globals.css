@@ -85,6 +85,18 @@ html[data-theme="dark"] .pixel-button:hover:not(:disabled) {
   color: rgb(255 247 251);
 }
 
+.theme-dark-decoration {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-light-decoration {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-dark-decoration {
+  display: block;
+}
+
 .pixel-button:disabled {
   cursor: not-allowed;
   opacity: 0.42;
