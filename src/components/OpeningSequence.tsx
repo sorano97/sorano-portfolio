@@ -57,7 +57,17 @@ export function OpeningSequence({ onComplete, playSound }: OpeningSequenceProps)
         ) : null}
 
         {step === "loading" ? (
-          <p className="text-4xl max-md:text-2xl">Open...</p>
+          <div className="w-[520px] text-center max-md:w-full">
+            <p className="mb-8 text-4xl max-md:text-2xl">Loading...</p>
+            <div className="h-8 border-[3px] border-line bg-surface p-1">
+              <motion.div
+                animate={{ width: "100%" }}
+                className="h-full bg-blush"
+                initial={{ width: "0%" }}
+                transition={{ duration: 2, ease: "linear" }}
+              />
+            </div>
+          </div>
         ) : null}
 
         {step === "name" ? (
