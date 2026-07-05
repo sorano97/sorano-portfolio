@@ -358,7 +358,11 @@ function CardDecoration({
     | "/decorations/ribbon_pink_02.png"
     | "/decorations/mark_heart_pink_02.png"
     | "/decorations/mark_heart_pink_03.png";
-  lightSrc?: "/decorations/black_cat.png";
+  lightSrc?:
+    | "/decorations/ribbon_brown_line_01.png"
+    | "/decorations/ribbon_brown_line_02.png"
+    | "/decorations/kirakira_01_brown.png"
+    | "/decorations/kirakira_02_brown.png";
   className: string;
 }) {
   return (
@@ -554,7 +558,7 @@ function TopSection() {
         <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
           <CardDecoration
             className="-left-9 -top-9 z-0 w-[116px] rotate-[-10deg] max-md:-left-5 max-md:-top-6 max-md:w-[74px]"
-            lightSrc="/decorations/black_cat.png"
+            lightSrc="/decorations/ribbon_brown_line_01.png"
             src="/decorations/ribbon_pink_01.png"
           />
           <p className="mb-4 text-3xl max-md:text-2xl">sorano portfolio</p>
@@ -638,7 +642,7 @@ function ProfileCard() {
     <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
       <CardDecoration
         className="-right-10 -top-10 z-0 w-[112px] rotate-[10deg] max-md:-right-5 max-md:-top-7 max-md:w-[76px]"
-        lightSrc="/decorations/black_cat.png"
+        lightSrc="/decorations/ribbon_brown_line_01.png"
         src="/decorations/ribbon_pink_01.png"
       />
       <p className="mb-8 text-3xl max-md:mb-5 max-md:text-2xl">PROFILE</p>
@@ -853,7 +857,7 @@ function NewsSection() {
                 {index === 1 ? (
                   <CardDecoration
                     className="-left-6 -top-7 z-0 w-[64px] rotate-[-13deg] max-md:-left-4 max-md:-top-5 max-md:w-[44px]"
-                    lightSrc="/decorations/black_cat.png"
+                    lightSrc="/decorations/ribbon_brown_line_02.png"
                     src="/decorations/ribbon_pink_02.png"
                   />
                 ) : null}
@@ -887,7 +891,7 @@ function NewsSection() {
         <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
           <CardDecoration
             className="-right-8 -top-9 z-0 w-[80px] rotate-[15deg] max-md:-right-4 max-md:-top-6 max-md:w-[58px]"
-            lightSrc="/decorations/black_cat.png"
+            lightSrc="/decorations/kirakira_02_brown.png"
             src="/decorations/mark_heart_pink_03.png"
           />
           <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">NEWS</p>
@@ -932,15 +936,15 @@ function WorksSection() {
 function WorkCard({ work }: { work: (typeof works)[number] }) {
   const decoration =
     work.id === "pixel-room"
-      ? {
+          ? {
           className: "-left-4 -top-5 z-0 w-[58px] rotate-[-10deg] max-md:-left-3 max-md:-top-4 max-md:w-[42px]",
-          lightSrc: "/decorations/black_cat.png" as const,
+          lightSrc: "/decorations/ribbon_brown_line_02.png" as const,
           src: "/decorations/ribbon_pink_02.png" as const
         }
       : work.id === "tiny-device"
         ? {
           className: "-right-5 -top-6 z-0 w-[54px] rotate-[12deg] max-md:-right-3 max-md:-top-4 max-md:w-[42px]",
-          lightSrc: "/decorations/black_cat.png" as const,
+          lightSrc: "/decorations/kirakira_02_brown.png" as const,
           src: "/decorations/mark_heart_pink_03.png" as const
         }
         : null;
@@ -994,7 +998,7 @@ function ContactSection() {
         <div className="pixel-panel relative px-9 py-8 max-md:px-5 max-md:py-5">
           <CardDecoration
             className="-left-8 -top-9 z-0 w-[102px] rotate-[-9deg] max-md:-left-5 max-md:-top-6 max-md:w-[70px]"
-            lightSrc="/decorations/black_cat.png"
+            lightSrc="/decorations/ribbon_brown_line_02.png"
             src="/decorations/ribbon_pink_02.png"
           />
           <p className="mb-5 text-3xl max-md:mb-3 max-md:text-2xl">CONTACT</p>
